@@ -1,121 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using minimax.tictactoe;
 
-
-
-namespace tests.connectfour
+namespace minimax.tictactoe
 {
-    public class State
+    class State
     {
         public static readonly int EMPTY = -1;
+        public static readonly int CYRCLE = (int)Player.Circle;
         public static readonly int CROSS = (int)Player.Cross;
-        public static readonly int CIRCLE = (int)Player.Circle;
-
-        private int[,] board;
-        private Player currentPlayer;
 
         public State()
         {
-            board = new int[3, 3];
-            for (int i = 0; i < 3; i++)
+            campo = new int[3, 3];
+            for (int row = 0; row < 3; row++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int col = 0; col < 3; col++)
                 {
-                    board[i, j] = EMPTY;
-                }
-                currentPlayer = Player.Cross;//inizia croce
-            }
-        }
-
-        public State(int[,] board, Player player)
-        {
-            if (board.GetLength(0) != 3 || board.GetLength(1) != 3)
-            {
-                throw new ArgumentOutOfRangeException("Illegal board dimension");
-            }
-            this.board = new int[3, 3];
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (board[i, j] != EMPTY && board[i, j] != CIRCLE && board[i.j] != CROSS)
-                    {
-                        throw new ArgumentOutOfRangeException("Illegal board state");
-                    }
-                    this.board[i, j] = board[i, j];
+                    campo[row, col] = EMPTY;
                 }
             }
-            this.currentPlayer = player;
-        }
-        public Player CurrentPlayer
-        {
-            get { return currentPlayer;}
+
+            giocatoreCorrente = Player.Cross;
         }
 
-        public int[,] Board
+        public int[,] campo { get; set; }
+        public Player giocatoreCorrente { get; set; }
+        public int getBoardState(int row, int col)
         {
-            get { return (int[,])board.Clone(); }
-        }
-        public int GetBoardValue(int row, int col)
-        {
-            if (row < 0 || row > 3)
+            int stato;
+            if (campo[row, col] == EMPTY)
             {
-                throw new ArgumentOutOfRangeException("Illegal row");
+                stato = EMPTY;
             }
-            if (col < 0 || col > 3)
+            else if (campo[row, col] == CYRCLE)
             {
-                throw new ArgumentOutOfRangeException("Illegal col");
-            }
-            return board[row, col];
-        }
-
-        public State GetResultingState(Action action)
-        {
-            int[,] newBoard = (int[,])board.Clone();
-            newBoard[action.Row, action.Col] = (int)currentPlayer;
-
-            Player player;
-
-            //cambio player
-            if (currentPlayer == Player.Circle)
-            {
-                player = Player.Cross;
+                stato = CYRCLE;
             }
             else
             {
-                player = Player.Circle;
+                stato = CROSS;
             }
-            return new State(newBoard, player);
-        }
-
-
-        //funzione per riga di comando
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            Dictionary<int, string> playerDict = new Dictionary<int, string>();
-            playerDict[EMPTY] = "";
-            playerDict[CIRCLE] = "0";
-            playerDict[CROSS] = "X";
-
-            sb.Append("Current player:");
-            sb.Append(playerDict[(int)currentPlayer]);
-
-            sb.Append("\nBoard");
-            for (int i = 0; i < 3; i++)
-            {
-                sb.Append("" + playerDict[board[i, 0]] +
-                    "|" + playerDict[board[i, 1]] +
-                    "|" + playerDict[board[i, 2]] + "\n");
-                if (i != 2)
-                {
-                    sb.Append("\n");
-                }
-            }
-
-            return sb.ToString();
+            return stato;
         }
     }
 }

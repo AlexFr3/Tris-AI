@@ -1,74 +1,164 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using minimax.core.adversarial;
 
-namespace minimax.tictactoe2
+
+namespace minimax.tictactoe
 {
-    public class Program
+    class Program
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Tris-AI");
+            
 
-            State s = new State();
-            Console.WriteLine(s.GetBoardState(0, 0));
-
-            for (int row = 0; row < 3; row++)
+            while (true)
             {
-                for (int col = 0; col < 3; col++)
+                
+                Console.WriteLine("   Tris-AI    ");
+
+                disegnaCampo();
+                Game game = new Game();
+
+                List<Action> actions = new List<Action>();
+                State state = game.GetInitialState();
+
+
+                AdversarialSearch<State, Action> adversarial;
+                adversarial = new MinimaxSearchLimited<State, Action, Player>(game);
+
+                while (!game.IsTerminal(state))
                 {
-                    Console.WriteLine($"row={row}, col={col}, value={s.GetBoardState(row, col)}");
+                    Console.WriteLine("Scegli la coordinata della riga");
+                    int row = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Scegli la coordinata della colonna");
+                    int col = Convert.ToInt32(Console.ReadLine());
+
+                    Action action = new Action(row, col);
+                    actions = game.GetActions(state);
+
+                    state = game.GetResult(state, action);
+                    Tab(state);
+
+                    if (!game.IsTerminal(state))
+                    {
+                        Action AzioneAI = adversarial.makeDecision(state);
+                        state = game.GetResult(state, AzioneAI);
+                        Tab(state);
+                    }
+                    
+                    
+                }
+            }
+        }
+        public static void disegnaCampo()
+        {
+            Console.WriteLine("_____________");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("|___|___|___|");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("|___|___|___|");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("|___|___|___|");
+        }
+        public static void Tab(State stato)
+        {
+
+            string[,] campoGioco = new string[3, 3];//viene riempito con  spazi, X, O, PER METTERLI NELLA Tab,USATO COME INDICE
+            for (int i = 0; i < 3; i++)
+            {
+
+                for (int j = 0; j < 3; j++)
+                {
+                    if (stato.campo[i, j] == -1)
+                    {
+                        campoGioco[i, j] = " ";  //se 0 = " "
+                    }
+
+                    else if (stato.campo[i, j] == 0)
+                    {
+                        campoGioco[i, j] = "X";  //se 1 = X
+                    }
+                    else
+                    {
+                        campoGioco[i, j] = "O";  //se 0 = O
+                    }
+
+
                 }
             }
 
-            Action a = new Action(1, 2);
-            Console.WriteLine($"Riga={a.Row}, Colonna={a.Col}");
+            Console.WriteLine("_____________");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("| {0} | {1} | {2} |", campoGioco[0, 0], campoGioco[0, 1], campoGioco[0, 2]);
+            Console.WriteLine("|___|___|___|");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("| {0} | {1} | {2} |", campoGioco[1, 0], campoGioco[1, 1], campoGioco[1, 2]);
+            Console.WriteLine("|___|___|___|");
+            Console.WriteLine("|   |   |   |");
+            Console.WriteLine("| {0} | {1} | {2} |", campoGioco[2, 0], campoGioco[2, 1], campoGioco[2, 2]);
+            Console.WriteLine("|___|___|___|");
 
 
-            Game g = new Game();
-            s = g.GetInitialState();
-            List<Action> mosse = g.GetActions(s);
-            foreach (Action mossa in mosse)
+
+
+        }
+        static bool controllaVittoria(string[,] campoGioco)
+        {
+
+            if (campoGioco[0, 0] == "X" && campoGioco[0, 1] == "X" && campoGioco[0, 2] == "X" || campoGioco[0, 0] == "O" && campoGioco[0, 1] == "O" && campoGioco[0, 2] == "O")
             {
-                Console.WriteLine($"Riga={mossa.Row}, Colonna={mossa.Col}");
+                return true;
+            }
+
+            if (campoGioco[1, 0] == "X" && campoGioco[1, 1] == "X" && campoGioco[1, 2] == "X" || campoGioco[1, 0] == "O" && campoGioco[1, 1] == "O" && campoGioco[1, 2] == "O")
+            {
+                return true;
+            }
+
+            if (campoGioco[2, 0] == "X" && campoGioco[2, 1] == "X" && campoGioco[2, 2] == "X" || campoGioco[2, 0] == "O" && campoGioco[2, 1] == "O" && campoGioco[2, 2] == "O")
+            {
+                return true;
+            }
+
+            if (campoGioco[2, 0] == "X" && campoGioco[2, 1] == "X" && campoGioco[2, 2] == "X" || campoGioco[2, 0] == "O" && campoGioco[2, 1] == "O" && campoGioco[2, 2] == "O")
+            {
+
+                return true;
+            }
+
+            if (campoGioco[0, 0] == "X" && campoGioco[1, 0] == "X" && campoGioco[2, 0] == "X" || campoGioco[0, 0] == "O" && campoGioco[1, 0] == "O" && campoGioco[2, 0] == "O")
+            {
+
+                return true;
+            }
+
+            if (campoGioco[0, 1] == "X" && campoGioco[1, 1] == "X" && campoGioco[2, 1] == "X" || campoGioco[0, 1] == "O" && campoGioco[1, 1] == "O" && campoGioco[2, 1] == "O")
+            {
+
+                return true;
+            }
+
+            if (campoGioco[0, 2] == "X" && campoGioco[1, 2] == "X" && campoGioco[2, 2] == "X" || campoGioco[0, 2] == "O" && campoGioco[1, 2] == "O" && campoGioco[2, 2] == "O")
+            {
+                return true;
+            }
+
+            if (campoGioco[0, 0] == "X" && campoGioco[1, 1] == "X" && campoGioco[2, 2] == "X" || campoGioco[0, 0] == "O" && campoGioco[1, 1] == "O" && campoGioco[2, 2] == "O")
+            {
+                return true;
+            }
+
+            if (campoGioco[0, 2] == "X" && campoGioco[1, 1] == "X" && campoGioco[2, 0] == "X" || campoGioco[0, 2] == "O" && campoGioco[1, 1] == "O" && campoGioco[2, 0] == "O")
+            {
+                return true;
             }
 
 
-            g = new Game();
-            s = g.GetInitialState();
-            State newS = g.GetResult(s, new Action(1, 2));
-            //Stampare lo stato per verificare che sia corretto
-
-
-            //Fare anche dei test simili a quelli sopra, partendo da metà partita
-
-
-            //Chiedere all'utente il livello di difficoltà (quanti livelli di profondità?
-            //                                             o quanto tempo di computazione?)
-
-            //Loop -> until partita finita
-            // Chiedere la mossa all'utente
-            // Calcolare il nuovo stato
-            // Stampare il nuovo stato
-            // Chiedere la mossa al computer
-            // Calcolare il nuovo stato
-            // Stampare il nuovo stato
-
-            Game game = new Game();
-            State state = game.GetInitialState();
-
-            AdversarialSearch<State, Action> adversarialSearch;
-
-            //Minimax: ricerca completa, ma ci metterebbe anni
-            //a completare alberi di gioco troppo grandi
-            adversarialSearch = new MinimaxSearch<State, Action, Player>(game);
-
-            //Minimax limitato in profondità
-            adversarialSearch = new MinimaxSearchLimited<State, Action, Player>(game, 3);
-
-            //Iterative deepening
-            adversarialSearch = new IterativeDeepening<State, Action, Player>(game,
-                IterativeDeepening<State, Action, Player>.Algorithm.Minimax, 300);
+            return false;
 
         }
 
