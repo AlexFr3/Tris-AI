@@ -31,9 +31,9 @@ namespace minimax.tictactoe
                 while (!game.IsTerminal(state))
                 {
                     //coordinate
-                    Console.WriteLine("Scegli la coordinata della riga");
+                    Console.WriteLine("Scegli la coordinata della riga(0,1,2)");
                     int row = Convert.ToInt32(Console.ReadLine());
-                    Console.WriteLine("Scegli la coordinata della colonna");
+                    Console.WriteLine("Scegli la coordinata della colonna(0,1,2)");
                     int col = Convert.ToInt32(Console.ReadLine());
 
                     Action action = new Action(row, col);
