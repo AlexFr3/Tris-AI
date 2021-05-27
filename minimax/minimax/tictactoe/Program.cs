@@ -17,11 +17,12 @@ namespace minimax.tictactoe
                 
                 Console.WriteLine("   Tris-AI    ");
 
+                //disegno campo
                 disegnaCampo();
                 Game game = new Game();
 
                 List<Action> actions = new List<Action>();
-                State state = game.GetInitialState();
+                State state = game.GetInitialState();//statoiniziale
 
 
                 AdversarialSearch<State, Action> adversarial;
@@ -29,6 +30,7 @@ namespace minimax.tictactoe
 
                 while (!game.IsTerminal(state))
                 {
+                    //coordinate
                     Console.WriteLine("Scegli la coordinata della riga");
                     int row = Convert.ToInt32(Console.ReadLine());
                     Console.WriteLine("Scegli la coordinata della colonna");
@@ -106,61 +108,5 @@ namespace minimax.tictactoe
 
 
         }
-        static bool controllaVittoria(string[,] campoGioco)
-        {
-
-            if (campoGioco[0, 0] == "X" && campoGioco[0, 1] == "X" && campoGioco[0, 2] == "X" || campoGioco[0, 0] == "O" && campoGioco[0, 1] == "O" && campoGioco[0, 2] == "O")
-            {
-                return true;
-            }
-
-            if (campoGioco[1, 0] == "X" && campoGioco[1, 1] == "X" && campoGioco[1, 2] == "X" || campoGioco[1, 0] == "O" && campoGioco[1, 1] == "O" && campoGioco[1, 2] == "O")
-            {
-                return true;
-            }
-
-            if (campoGioco[2, 0] == "X" && campoGioco[2, 1] == "X" && campoGioco[2, 2] == "X" || campoGioco[2, 0] == "O" && campoGioco[2, 1] == "O" && campoGioco[2, 2] == "O")
-            {
-                return true;
-            }
-
-            if (campoGioco[2, 0] == "X" && campoGioco[2, 1] == "X" && campoGioco[2, 2] == "X" || campoGioco[2, 0] == "O" && campoGioco[2, 1] == "O" && campoGioco[2, 2] == "O")
-            {
-
-                return true;
-            }
-
-            if (campoGioco[0, 0] == "X" && campoGioco[1, 0] == "X" && campoGioco[2, 0] == "X" || campoGioco[0, 0] == "O" && campoGioco[1, 0] == "O" && campoGioco[2, 0] == "O")
-            {
-
-                return true;
-            }
-
-            if (campoGioco[0, 1] == "X" && campoGioco[1, 1] == "X" && campoGioco[2, 1] == "X" || campoGioco[0, 1] == "O" && campoGioco[1, 1] == "O" && campoGioco[2, 1] == "O")
-            {
-
-                return true;
-            }
-
-            if (campoGioco[0, 2] == "X" && campoGioco[1, 2] == "X" && campoGioco[2, 2] == "X" || campoGioco[0, 2] == "O" && campoGioco[1, 2] == "O" && campoGioco[2, 2] == "O")
-            {
-                return true;
-            }
-
-            if (campoGioco[0, 0] == "X" && campoGioco[1, 1] == "X" && campoGioco[2, 2] == "X" || campoGioco[0, 0] == "O" && campoGioco[1, 1] == "O" && campoGioco[2, 2] == "O")
-            {
-                return true;
-            }
-
-            if (campoGioco[0, 2] == "X" && campoGioco[1, 1] == "X" && campoGioco[2, 0] == "X" || campoGioco[0, 2] == "O" && campoGioco[1, 1] == "O" && campoGioco[2, 0] == "O")
-            {
-                return true;
-            }
-
-
-            return false;
-
-        }
-
     }
 }
