@@ -15,4 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Minimax\Minimax.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="connectfour\" />
+  </ItemGroup>
 </Project>

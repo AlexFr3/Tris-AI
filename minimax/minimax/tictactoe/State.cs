@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using minimax.tictactoe;
-using minimax.connectfour;
-using minimax.core;
+
+
 
 namespace tests.connectfour
 {
@@ -51,7 +51,7 @@ namespace tests.connectfour
         }
         public Player CurrentPlayer
         {
-            get { return currentPlayer};
+            get { return currentPlayer;}
         }
 
         public int[,] Board
